@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Firebase Realtime Database</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="./main.css">
+</head>
+
+<body>
+
+    <main class="container-fluid">
+        <div class="text-center">
+            <button type="button" class="btn btn-primary" onclick="criarCard()">Adicionar Card</button>
+        </div>
+        <div class="card-container">
+
+        </div>
+    </main>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/7.8.1/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+     <script src="https://www.gstatic.com/firebasejs/7.8.1/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.8.1/firebase-analytics.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBT6rCWO2wQKjBbnpUptxUoTIwOyIlrIr4",
+    authDomain: "curso-udemy-rob.firebaseapp.com",
+    databaseURL: "https://curso-udemy-rob.firebaseio.com",
+    projectId: "curso-udemy-rob",
+    storageBucket: "curso-udemy-rob.appspot.com",
+    messagingSenderId: "921817071324",
+    appId: "1:921817071324:web:d09c501586fae0dfd77e19",
+    measurementId: "G-V5BXCTJ7T6"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+</script>
+    <!-- Nosso app -->
+    <script src="./app.js"></script>
+</body>
+
+</html>
