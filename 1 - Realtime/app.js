@@ -31,8 +31,8 @@ function criarCard() {
     }) */
 
     /* push(); cria um id unico e inseri os dados dentro desse uid */
-    ref.push().set(card).then(() => {
-        adicionaCardATela(card)
+    ref.push(card).then(snapshot => {
+        adicionaCardATela(card, snapshot.key)
     })
 
 
@@ -71,10 +71,26 @@ function descurtir(id) {
  * Espera o evento de que a DOM está pronta para executar algo
  */
 document.addEventListener("DOMContentLoaded", function () {
+    /* once(): retorna os dados lidos de uma url  
+       snapshot: objeto retornado pela leitura*/
     ref.once('value').then(snapshot => {
-        console.log(snapshot.val());
+        //Acessa um nó filho
+        console.log('child', snapshot.child('-LwUpgmRiwZfx-xjlHyN').val());
+        //Checa se existe algo no snapshot
+        console.log('exixtes()', snapshot.exists());
+        //se existe filho passado na url
+        console.log('hasChild()-Nome', snapshot.hasChild('-LwUpgmRiwZfx-xjlHyN/nome'))
+        console.log('hasChild()-Comentario', snapshot.hasChild('-LwUpgmRiwZfx-xjlHyN/comentario'))
+        //se exixte algum filho no nó
+        console.log('hasChildren()', snapshot.child('-LwUpgmRiwZfx-xjlHyN').hasChildren())
+        //numero de filhos no snapshot
+        console.log('numChildren()', snapshot.numChildren());
+
+        //a chave desse snapshot/caminho
+        console.log('Chave', snapshot.key);
         snapshot.forEach(value => {
-            adicionaCardATela(value.val())
+            console.log('Chave', value.key)
+            adicionaCardATela(value.val(), value.key)
         })
     })
 });
