@@ -31,9 +31,9 @@ function criarCard() {
     }) */
 
     /* push(); cria um id unico e inseri os dados dentro desse uid */
-    ref.push(card).then(snapshot => {
+ /*    ref.push(card).then(snapshot => {
        // adicionaCardATela(card, snapshot.key)
-    })
+    }) */
 
 
 //SAlva no bd firebase
@@ -41,6 +41,14 @@ function criarCard() {
         adicionaCardATela(card)
     }) */
 
+
+    /* Usando fetch para add card */
+    fetch('https://curso-udemy-rob.firebaseio.com/card.json',{
+        body: JSON.stringify(card),
+        method: 'POST',
+        mode: 'no-cors'
+    }).catch(err => console.log(err));
+   
 };
 
 /**
@@ -78,7 +86,9 @@ function curtir(id) {
     //ou pode-se passar o objeto completo e atuializa-lo com os novos valores no campos correspondentes
      ref.child(id + '/curtidas').set(countNumber).then(() => {
          count.innerText = countNumber;
-     })
+     }, err => {
+        console.log('erro ao curtir: ', err)
+    })
 };
 
 /**
@@ -95,6 +105,8 @@ function descurtir(id) {
         //update(): Recebe um objeto (e apenas um objeto) e atualiza apenas as propriedades desse objeto
         ref.child(id).update({curtidas: countNumber}).then(() => {
             count.innerText = countNumber;
+        }).catch((err) => {
+            console.log('erro ao descurtir: ', err)
         })
     }
     
@@ -106,6 +118,10 @@ function descurtir(id) {
  * Espera o evento de que a DOM está pronta para executar algo
  */
 document.addEventListener("DOMContentLoaded", function () {
+    //Log dos status das chamadas do firebase
+/*     firebase.database.enableLogging(function(message) {
+        console.log('[firebase]', message);
+    }) */
     /* once(): retorna os dados lidos de uma url  
        snapshot: objeto retornado pela leitura*/
    // ref.once('value').then(snapshot => {
@@ -172,9 +188,9 @@ document.addEventListener("DOMContentLoaded", function () {
     /* Filtro */
     //.startAt(25): Traz os valores acima dos indicados como parametro
     //.endAt(30): Traz os valores até o indicado no paramentro
-     ref.orderByChild('idade').startAt(25).endAt(30).on('child_added', snapshot =>{
+   /*   ref.orderByChild('idade').startAt(25).endAt(30).on('child_added', snapshot =>{
         adicionaCardATela(snapshot.val(), snapshot.key);
-    }) 
+    }) */ 
 
     //.equalTo(30): Traz apenas nós que tenham o valor igual ao indicado por parametro
     /* ref.orderByChild('idade').equalTo(30).on('child_added', snapshot =>{
@@ -182,6 +198,32 @@ document.addEventListener("DOMContentLoaded", function () {
     }) */
 
 
+    /* Limites */
+    //.limitToFirst(5): retona a quatidade de nós informada no parametro, no caso os 5 primeiros
+    //.limitToLast(5): retona a quatidade de nós informada no parametro, no caso os 5 ultimos
+/*     ref.orderByChild('idade').limitToFirst(5).on('child_added', snapshot =>{
+        adicionaCardATela(snapshot.val(), snapshot.key);
+    }) */
+
+    //Deixa de escutar os eventos
+/*     ref.on('value', snapshot => {
+        snapshot.forEach (value => {
+            adicionaCardATela(value.val(), value.key);
+        });
+        ref.off();
+    }, err => {
+        console.log('erro no on: ', err)
+    }); */ 
+
+    /* Usando fetch no lugar da biblioteca do firebase, para obter os dados via http */
+    fetch('https://curso-udemy-rob.firebaseio.com/card.json')
+    .then(res => res.json())
+    .then(res => {
+        //console.log('http', res)
+        for (const key in res) {
+            adicionaCardATela(res[key], key);
+        }
+    })
 
 });
 
