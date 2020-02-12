@@ -32,7 +32,7 @@ function criarCard() {
 
     /* push(); cria um id unico e inseri os dados dentro desse uid */
     ref.push(card).then(snapshot => {
-        adicionaCardATela(card, snapshot.key)
+       // adicionaCardATela(card, snapshot.key)
     })
 
 
@@ -108,7 +108,7 @@ function descurtir(id) {
 document.addEventListener("DOMContentLoaded", function () {
     /* once(): retorna os dados lidos de uma url  
        snapshot: objeto retornado pela leitura*/
-    ref.once('value').then(snapshot => {
+   // ref.once('value').then(snapshot => {
         //Acessa um nó filho
         //console.log('child', snapshot.child('-LwUpgmRiwZfx-xjlHyN').val());
         //Checa se existe algo no snapshot
@@ -123,11 +123,66 @@ document.addEventListener("DOMContentLoaded", function () {
 
         //a chave desse snapshot/caminho
         //console.log('Chave', snapshot.key);
-        snapshot.forEach(value => {
+ /*        snapshot.forEach(value => {
            //console.log('Chave', value.key)
             adicionaCardATela(value.val(), value.key)
         })
+    }) 
+
+    /* 
+     * .on(): 
+     */
+/*     ref.on('value', snapshot => {
+        snapshot.forEach (value => {
+            adicionaCardATela(value.val(), value.key);
+        })
+    }) */
+
+    //Observaveis
+    /* ref.on('child_added', snapshot => {
+        adicionaCardATela(snapshot.val(), snapshot.key);
     })
+
+    ref.on('child_changed', (snapshot, uid) => {
+        console.log(snapshot.key, uid);
+    })
+
+    ref.on('child_removed', snapshot => {
+        console.log('removed', snapshot.key);
+    }) */
+
+/* Ordenação */
+//É possivel utilizar apenas uma metodo de ordenação por vez
+//.orderByChild('filho'): Ordena pela propriedade filho passado como parametro
+/*     ref.orderByChild('idade').on('child_added', snapshot =>{
+        adicionaCardATela(snapshot.val(), snapshot.key);
+    }) */
+
+
+    //.orderByKey(): ordena pelo chave dos nos
+/*     ref.orderByKey().on('child_added', snapshot =>{
+        adicionaCardATela(snapshot.val(), snapshot.key);
+    }) */
+
+     //.orderByValue(): ordena pelo valor de cada propriedade dentro dos nós, não vale para nos que tenham como filhos outros nos
+  /*    ref.child('1').orderByValue().on('child_added', snapshot =>{
+        console.log('O valor da chave ' + snapshot.key + ' é: ' + snapshot.val())
+    }) */
+
+    /* Filtro */
+    //.startAt(25): Traz os valores acima dos indicados como parametro
+    //.endAt(30): Traz os valores até o indicado no paramentro
+     ref.orderByChild('idade').startAt(25).endAt(30).on('child_added', snapshot =>{
+        adicionaCardATela(snapshot.val(), snapshot.key);
+    }) 
+
+    //.equalTo(30): Traz apenas nós que tenham o valor igual ao indicado por parametro
+    /* ref.orderByChild('idade').equalTo(30).on('child_added', snapshot =>{
+        adicionaCardATela(snapshot.val(), snapshot.key);
+    }) */
+
+
+
 });
 
 /**
