@@ -48,6 +48,19 @@ function criarCard() {
  * @param {String} id Id do card
  */
 function deletar(id) {
+    //var card = document.getElementById(id);
+    //.set(null): Ao setar o nó como nulo ele é excluido do firebase
+    //ref.child(id).set(null).then(() => {
+    //    card.remove();
+   // })
+
+    //.remove() remove o nó pai e filhos em que o metodo é utilizado no bd
+    ref.child(id).remove().then(() => {
+        //Remove da view
+        var card = document.getElementById(id);
+            card.remove();
+    })
+
     
 };
 
@@ -56,7 +69,16 @@ function deletar(id) {
  * @param {String} id Id do card
  */
 function curtir(id) {
-
+     var card = document.getElementById(id);
+     var count = card.getElementsByClassName('count-number')[0];
+     // o sinal de + converte para number
+     var countNumber =+count.innerText;
+     countNumber = countNumber + 1;
+    //.set(): Pode ser acessado diremente o objeto que quer atualizar e passar o valor atualizado
+    //ou pode-se passar o objeto completo e atuializa-lo com os novos valores no campos correspondentes
+     ref.child(id + '/curtidas').set(countNumber).then(() => {
+         count.innerText = countNumber;
+     })
 };
 
 /**
@@ -64,6 +86,19 @@ function curtir(id) {
  * @param {String} id Id do card
  */
 function descurtir(id) {
+    var card = document.getElementById(id);
+    var count = card.getElementsByClassName('count-number')[0];
+    // o sinal de + converte para number
+    var countNumber =+count.innerText;
+    if (countNumber > 0) {
+        countNumber = countNumber - 1;
+        //update(): Recebe um objeto (e apenas um objeto) e atualiza apenas as propriedades desse objeto
+        ref.child(id).update({curtidas: countNumber}).then(() => {
+            count.innerText = countNumber;
+        })
+    }
+    
+
 
 };
 
@@ -75,21 +110,21 @@ document.addEventListener("DOMContentLoaded", function () {
        snapshot: objeto retornado pela leitura*/
     ref.once('value').then(snapshot => {
         //Acessa um nó filho
-        console.log('child', snapshot.child('-LwUpgmRiwZfx-xjlHyN').val());
+        //console.log('child', snapshot.child('-LwUpgmRiwZfx-xjlHyN').val());
         //Checa se existe algo no snapshot
-        console.log('exixtes()', snapshot.exists());
+        //console.log('exixtes()', snapshot.exists());
         //se existe filho passado na url
-        console.log('hasChild()-Nome', snapshot.hasChild('-LwUpgmRiwZfx-xjlHyN/nome'))
-        console.log('hasChild()-Comentario', snapshot.hasChild('-LwUpgmRiwZfx-xjlHyN/comentario'))
+        //console.log('hasChild()-Nome', snapshot.hasChild('-LwUpgmRiwZfx-xjlHyN/nome'))
+       //console.log('hasChild()-Comentario', snapshot.hasChild('-LwUpgmRiwZfx-xjlHyN/comentario'))
         //se exixte algum filho no nó
-        console.log('hasChildren()', snapshot.child('-LwUpgmRiwZfx-xjlHyN').hasChildren())
+        //console.log('hasChildren()', snapshot.child('-LwUpgmRiwZfx-xjlHyN').hasChildren())
         //numero de filhos no snapshot
-        console.log('numChildren()', snapshot.numChildren());
+        //console.log('numChildren()', snapshot.numChildren());
 
         //a chave desse snapshot/caminho
-        console.log('Chave', snapshot.key);
+        //console.log('Chave', snapshot.key);
         snapshot.forEach(value => {
-            console.log('Chave', value.key)
+           //console.log('Chave', value.key)
             adicionaCardATela(value.val(), value.key)
         })
     })
